@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大學生小助手 - APP 預覽</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .phone-container {
+            width: 360px;
+            height: 640px;
+            background: #000;
+            border-radius: 25px;
+            padding: 10px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .status-bar {
+            height: 24px;
+            background: #6200ea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            color: white;
+            font-size: 12px;
+        }
+        
+        .app-content {
+            height: calc(100% - 24px);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: #6200ea;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            background: #f5f5f5;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .nav-tab {
+            flex: 1;
+            padding: 12px 8px;
+            text-align: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+        
+        .nav-tab.active {
+            background: #6200ea;
+            color: white;
+        }
+        
+        .nav-tab:hover {
+            background: #e3f2fd;
+        }
+        
+        .nav-tab.active:hover {
+            background: #5c00d6;
+        }
+        
+        .content {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #6200ea;
+        }
+        
+        .feature-title {
+            font-weight: bold;
+            color: #6200ea;
+            margin-bottom: 8px;
+        }
+        
+        .feature-desc {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+        
+        .task-text {
+            flex: 1;
+            font-size: 14px;
+        }
+        
+        .priority-high { border-left-color: #f44336; }
+        .priority-medium { border-left-color: #ff9800; }
+        .priority-low { border-left-color: #4caf50; }
+        
+        .schedule-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: #e8f5e8;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .course-info {
+            flex: 1;
+        }
+        
+        .course-name {
+            font-weight: bold;
+            color: #2e7d32;
+        }
+        
+        .course-details {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+        
+        .course-time {
+            font-size: 12px;
+            font-weight: bold;
+            color: #1976d2;
+        }
+        
+        .event-item {
+            padding: 12px;
+            background: #fff3e0;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border-left: 4px solid #ff9800;
+        }
+        
+        .event-title {
+            font-weight: bold;
+            color: #f57c00;
+        }
+        
+        .event-datetime {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+        
+        .hobby-item {
+            padding: 12px;
+            background: #f3e5f5;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border-left: 4px solid #9c27b0;
+        }
+        
+        .hobby-name {
+            font-weight: bold;
+            color: #7b1fa2;
+        }
+        
+        .hobby-level {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+        
+        .floating-button {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background: #6200ea;
+            border-radius: 50%;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(98, 0, 234, 0.4);
+            transition: all 0.3s;
+        }
+        
+        .floating-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(98, 0, 234, 0.6);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <div class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>🔋100%</span>
+            </div>
+            
+            <div class="app-content">
+                <div class="header">
+                    大學生小助手
+                </div>
+                
+                <div class="nav-tabs">
+                    <button class="nav-tab active" onclick="showTab('home')">首頁</button>
+                    <button class="nav-tab" onclick="showTab('tasks')">任務</button>
+                    <button class="nav-tab" onclick="showTab('schedule')">課表</button>
+                    <button class="nav-tab" onclick="showTab('calendar')">行事曆</button>
+                    <button class="nav-tab" onclick="showTab('hobbies')">興趣</button>
+                </div>
+                
+                <div class="content">
+                    <!-- 首頁內容 -->
+                    <div id="home" class="tab-content active">
+                        <div class="feature-card">
+                            <div class="feature-title">📋 今日任務</div>
+                            <div class="feature-desc">您有 3 個待完成的任務</div>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-title">📚 下節課程</div>
+                            <div class="feature-desc">資料結構 - 10:30 @ 資工館201</div>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-title">📅 今日事件</div>
+                            <div class="feature-desc">小組報告準備 - 14:00</div>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-title">🎯 本週目標</div>
+                            <div class="feature-desc">Python 練習 2 小時</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 任務內容 -->
+                    <div id="tasks" class="tab-content">
+                        <div class="task-item">
+                            <input type="checkbox" class="task-checkbox">
+                            <span class="task-text">完成資料結構作業</span>
+                        </div>
+                        
+                        <div class="task-item">
+                            <input type="checkbox" class="task-checkbox">
+                            <span class="task-text">準備期中考複習</span>
+                        </div>
+                        
+                        <div class="task-item">
+                            <input type="checkbox" class="task-checkbox" checked>
+                            <span class="task-text" style="text-decoration: line-through; color: #999;">買教科書</span>
+                        </div>
+                        
+                        <div class="task-item">
+                            <input type="checkbox" class="task-checkbox">
+                            <span class="task-text">小組會議準備</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 課表內容 -->
+                    <div id="schedule" class="tab-content">
+                        <div class="schedule-item">
+                            <div class="course-info">
+                                <div class="course-name">資料結構</div>
+                                <div class="course-details">張教授 • 資工館201</div>
+                            </div>
+                            <div class="course-time">10:30-12:00</div>
+                        </div>
+                        
+                        <div class="schedule-item">
+                            <div class="course-info">
+                                <div class="course-name">計算機概論</div>
+                                <div class="course-details">李教授 • 資工館105</div>
+                            </div>
+                            <div class="course-time">14:00-15:30</div>
+                        </div>
+                        
+                        <div class="schedule-item">
+                            <div class="course-info">
+                                <div class="course-name">程式設計</div>
+                                <div class="course-details">王教授 • 電腦教室A</div>
+                            </div>
+                            <div class="course-time">16:00-17:30</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 行事曆內容 -->
+                    <div id="calendar" class="tab-content">
+                        <div class="event-item">
+                            <div class="event-title">📚 期中考週</div>
+                            <div class="event-datetime">6月10日 - 6月14日</div>
+                        </div>
+                        
+                        <div class="event-item">
+                            <div class="event-title">👥 小組報告</div>
+                            <div class="event-datetime">6月12日 14:00</div>
+                        </div>
+                        
+                        <div class="event-item">
+                            <div class="event-title">🎉 社團活動</div>
+                            <div class="event-datetime">6月15日 18:00</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 興趣內容 -->
+                    <div id="hobbies" class="tab-content">
+                        <div class="hobby-item">
+                            <div class="hobby-name">🐍 Python 程式設計</div>
+                            <div class="hobby-level">中級 • 已投入 25 小時</div>
+                        </div>
+                        
+                        <div class="hobby-item">
+                            <div class="hobby-name">🎸 吉他演奏</div>
+                            <div class="hobby-level">初級 • 已投入 12 小時</div>
+                        </div>
+                        
+                        <div class="hobby-item">
+                            <div class="hobby-name">📸 攝影技術</div>
+                            <div class="hobby-level">進階 • 已投入 48 小時</div>
+                        </div>
+                        
+                        <div class="hobby-item">
+                            <div class="hobby-name">🏃‍♂️ 跑步健身</div>
+                            <div class="hobby-level">中級 • 已投入 35 小時</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="floating-button" onclick="addItem()">+</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // 隱藏所有內容
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+            
+            // 移除所有標籤的活動狀態
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // 顯示選中的內容
+            document.getElementById(tabName).classList.add('active');
+            
+            // 設置對應標籤為活動狀態
+            event.target.classList.add('active');
+        }
+        
+        function addItem() {
+            alert('新增功能已觸發！\n在實際 APP 中，這裡會開啟相應的新增頁面。');
+        }
+    </script>
+</body>
+</html>
